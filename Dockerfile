@@ -17,7 +17,7 @@ RUN conda clean --all -f -y && \
     fix-permissions "/home/${NB_USER}"
 
 # Install Python 3 packages
-ARG AUTOGLUON_VERSION='0.1.0'
+ARG AUTOGLUON_VERSION='0.2.0'
 RUN pip install --upgrade --no-cache-dir pip && \
     pip install --upgrade --no-cache-dir setuptools wheel && \
     pip install --upgrade --no-cache-dir 'mxnet==1.7.*' && \
