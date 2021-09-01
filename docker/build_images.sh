@@ -1,5 +1,5 @@
 # Building unofficial images
-export AUTOGLUON_VERSION='0.3.0'
+export AUTOGLUON_VERSION='0.3.1'
 export OS_NAME='ubuntu18.04'
 export PYTHON_VERSION='3.7'
 export RAPIDS_VERSION='0.19'
