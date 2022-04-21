@@ -3,12 +3,12 @@ all: runtime
 
 .PHONY: clean
 clean:
-	docker rmi -f  gradientsky/autogluon:${TAG} || :
+	docker rmi -f  autogluon/autogluon:${TAG} || :
 
 .PHONY: runtime
 runtime:
 	docker build \
-		--rm -t gradientsky/autogluon:${TAG} \
+		--rm -t autogluon/autogluon:${TAG} \
 		--no-cache \
 		--force-rm \
 		.

@@ -3,7 +3,7 @@
 </div>
 
 ## AutoML for Text, Image, and Tabular Data
-**Current Version - AutoGluon v0.3.1**
+**Current Version - AutoGluon v0.4.0**
 
 [![Build Status](https://ci.gluon.ai/view/all/job/autogluon/job/master/badge/icon)](https://ci.gluon.ai/view/all/job/autogluon/job/master/)
 [![Pypi Version](https://img.shields.io/pypi/v/autogluon.svg)](https://pypi.org/project/autogluon/#history)
@@ -22,7 +22,7 @@ Visit [auto.gluon.ai](https://auto.gluon.ai) for more information.
 
 #### CPU version
 ```
-0.3.1-cpu-framework-ubuntu18.04-py3.7
+0.4.0-cpu-framework-ubuntu18.04-py3.7
  ^     ^   ^          ^          ^
  |     |   type       |          python version
  |     |              |
@@ -35,7 +35,7 @@ Visit [auto.gluon.ai](https://auto.gluon.ai) for more information.
 #### GPU version
 See RAPIDS image prerequisites at [rapidsai/rapidsai](https://hub.docker.com/r/rapidsai/rapidsai)
 ```
-0.3.1-rapids0.19-cuda10.2-framework-ubuntu18.04-py3.7
+0.4.0-rapids22.04-cuda11.2-jupyter-ubuntu20.04-py3.8
  ^          ^        ^    ^          ^          ^
  |          |        |    type       |          python version
  |          |        |               |
@@ -51,16 +51,16 @@ See RAPIDS image prerequisites at [rapidsai/rapidsai](https://hub.docker.com/r/r
 Start Container and Notebook Server with GPU support
 
 ```shell
-$ docker pull autogluon/autogluon:0.3.1-rapids0.19-cuda10.2-jupyter-ubuntu18.04-py3.7
+$ docker pull autogluon/autogluon:0.4.0-rapids22.04-cuda11.2-jupyter-ubuntu20.04-py3.8
 $ docker run --gpus all --rm -it -p 8888:8888 \
-         autogluon/autogluon:0.3.1-rapids0.19-cuda10.2-jupyter-ubuntu18.04-py3.7
+         autogluon/autogluon:0.4.0-rapids22.04-cuda11.2-jupyter-ubuntu20.04-py3.8
 ```
 
 Start Container and Notebook Server with CPU-only support
 
 ```shell
-$ docker pull autogluon/autogluon:0.3.1-cpu-jupyter-ubuntu18.04-py3.7
+$ docker pull autogluon/autogluon:0.4.0-cpu-jupyter-ubuntu20.04-py3.8
 $ docker run --rm -it -p 8888:8888 \
-         autogluon/autogluon:0.3.1-cpu-jupyter-ubuntu18.04-py3.7
+         autogluon/autogluon:0.4.0-cpu-jupyter-ubuntu20.04-py3.8
 ```
 

@@ -1,13 +1,15 @@
-ARG FROM_IMAGE=ubuntu:18.04
+ARG FROM_IMAGE=ubuntu:20.04
 
 FROM ${FROM_IMAGE}
 
-ARG PYTHON_VERSION=3.7.10
+ARG OPENSSL_VERSION=1.1.1n
+ARG PYTHON_VERSION=3.8.12
 ARG PYTHON=python3
-ARG MXNET_VER=1.7.*
-ARG TORCH_VER=1.8.0+cpu
-ARG TORCH_VISION_VER=0.9.0+cpu
-ARG AUTOGLUON_VERSION=0.3.1
+ARG MXNET_VER=1.9.*
+ARG TORCH_VER=1.10.2+cpu
+ARG TORCH_VISION_VER=0.11.3+cpu
+
+ARG AUTOGLUON_VERSION=0.4.0
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
@@ -53,6 +55,16 @@ RUN apt-get update \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
 
+# install OpenSSL
+RUN wget -q -c https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz \
+ && tar -xzf openssl-${OPENSSL_VERSION}.tar.gz \
+ && cd openssl-${OPENSSL_VERSION} \
+ && ./config && make -j $(nproc) && make install \
+ && ldconfig \
+ && cd .. && rm -rf openssl-* \
+ && rmdir /usr/local/ssl/certs \
+ && ln -s /etc/ssl/certs /usr/local/ssl/certs
+
 # Install Open MPI
 RUN mkdir /tmp/openmpi \
  && cd /tmp/openmpi \
@@ -85,17 +97,17 @@ RUN wget -q https://www.python.org/ftp/python/$PYTHON_VERSION/Python-$PYTHON_VER
  && cd .. && rm -rf ../Python-$PYTHON_VERSION* \
  && ln -s /usr/local/bin/pip3 /usr/bin/pip \
  && ln -s /usr/local/bin/$PYTHON /usr/local/bin/python \
- && pip --no-cache-dir install --upgrade pip \
+ && pip --no-cache-dir install --upgrade --trusted-host pypi.org --trusted-host files.pythonhosted.org pip \
  && pip --no-cache-dir install --upgrade wheel setuptools
 
-WORKDIR /home/
+WORKDIR /
 
 RUN pip install --no-cache-dir -U \
-    torch==${TORCH_VER} torchvision==${TORCH_VISION_VER} -f https://download.pytorch.org/whl/torch_stable.html \
+    torch==${TORCH_VER} torchvision==${TORCH_VISION_VER} -f https://download.pytorch.org/whl/cpu/torch_stable.html \
     mxnet==${MXNET_VER} \
     autogluon==${AUTOGLUON_VERSION} \
     sagemaker-mxnet-training \
- && pip uninstall -y \
+ && pip uninstall -y \ 
     datashader \
     ipykernel \
     ipython \
@@ -121,7 +133,15 @@ RUN pip install --no-cache-dir -U \
     pyppeteer \
     traitlets \
     websockets \
-    widgetsnbextension
+    widgetsnbextension \
+ && rm -rf /tmp/* \
+ && rm -rf /root/.viminfo
+
+# Security patching
+RUN pip install --no-cache-dir -U 'ray>=1.10,<1.11' \
+ && pip install --no-cache-dir -U 'pytorch_lightning>=1.5.10,<1.7.0' \
+ && pip install --no-cache-dir -U 'Pillow>=9.0.1,<9.1.0'
+
 
 # Allow OpenSSH to talk to containers without asking for confirmation
 RUN cat /etc/ssh/ssh_config | grep -v StrictHostKeyChecking > /etc/ssh/ssh_config.new \
@@ -142,5 +162,14 @@ RUN rm -rf /root/.ssh/ \
 # https://stackoverflow.com/questions/29274638/opencv-libdc1394-error-failed-to-initialize-libdc1394
 # TODO: Should we be installing OpenCV in our image like this? Is there another way we can fix this?
 RUN ln -s /dev/null /dev/raw1394
+
+RUN HOME_DIR=/root \
+ && curl -o ${HOME_DIR}/oss_compliance.zip https://aws-dlinfra-utilities.s3.amazonaws.com/oss_compliance.zip \
+ && unzip ${HOME_DIR}/oss_compliance.zip -d ${HOME_DIR}/ \
+ && cp ${HOME_DIR}/oss_compliance/test/testOSSCompliance /usr/local/bin/testOSSCompliance \
+ && chmod +x /usr/local/bin/testOSSCompliance \
+ && chmod +x ${HOME_DIR}/oss_compliance/generate_oss_compliance.sh \
+ && ${HOME_DIR}/oss_compliance/generate_oss_compliance.sh ${HOME_DIR} ${PYTHON} \
+ && rm -rf ${HOME_DIR}/oss_compliance*
 
 CMD ["/bin/bash"]
