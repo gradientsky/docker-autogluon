@@ -52,7 +52,7 @@ Start Container and Notebook Server with GPU support
 
 ```shell
 $ docker pull autogluon/autogluon:0.4.0-rapids22.04-cuda11.2-jupyter-ubuntu20.04-py3.8
-$ docker run --gpus all --rm -it -p 8888:8888 \
+$ docker run --gpus all --shm-size=1G --rm -it -p 8888:8888 \
          autogluon/autogluon:0.4.0-rapids22.04-cuda11.2-jupyter-ubuntu20.04-py3.8
 ```
 
@@ -60,7 +60,7 @@ Start Container and Notebook Server with CPU-only support
 
 ```shell
 $ docker pull autogluon/autogluon:0.4.0-cpu-jupyter-ubuntu20.04-py3.8
-$ docker run --rm -it -p 8888:8888 \
+$ docker run --rm --shm-size=1G -it -p 8888:8888 \
          autogluon/autogluon:0.4.0-cpu-jupyter-ubuntu20.04-py3.8
 ```
 
