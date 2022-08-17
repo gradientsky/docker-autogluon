@@ -3,5 +3,5 @@
   echo "${output}"
 
   [ $status -eq 0 ]
-  [ "${lines[1]}" = "Version: 0.4.0" ]
+  [ "${lines[1]}" = "Version: 0.5.2" ]
 }
