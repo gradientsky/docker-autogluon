@@ -17,7 +17,7 @@ RUN apt-get update \
  && rm -rf /var/lib/apt/lists/* \
  && rm -rf /tmp/*
 
-ARG AUTOGLUON_VERSION=0.6.1
+ARG AUTOGLUON_VERSION=0.6.2
 
 # NOTE: reinstalling horovod with pytorch support because it is available in the container
 # Updating certifi - https://pyup.io/p/pypi/certifi/2ff/
@@ -32,7 +32,7 @@ RUN pip install --no-cache-dir -U --trusted-host pypi.org --trusted-host files.p
 # Removing GluonTS nursery/tsbench package - it is not used in training/inference and have security vulnerabilities
 RUN rm -rf /usr/local/lib/python3.8/dist-packages/gluonts/nursery/tsbench
 
-# Remove these to address security issues; these are not used if only python package is used
+# Remove these JAR files to address security issues; these are not used if only python package is used
 RUN rm -rf /usr/local/lib/python3.8/dist-packages/ray/jars \
  && rm -rf /opt/conda/lib/python3.8/site-packages/ray/jars
 

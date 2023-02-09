@@ -3,7 +3,7 @@
 </div>
 
 ## AutoML for Text, Image, and Tabular Data
-**Current Version - AutoGluon v0.6.1**
+**Current Version - AutoGluon v0.6.2**
 
 [![Build Status](https://ci.gluon.ai/view/all/job/autogluon/job/master/badge/icon)](https://ci.gluon.ai/view/all/job/autogluon/job/master/)
 [![Pypi Version](https://img.shields.io/pypi/v/autogluon.svg)](https://pypi.org/project/autogluon/#history)
@@ -22,7 +22,7 @@ Visit [auto.gluon.ai](https://auto.gluon.ai) for more information.
 
 #### CPU version
 ```
-0.6.1-cpu-framework-ubuntu20.04-py3.8
+0.6.2-cpu-framework-ubuntu20.04-py3.8
  ^     ^   ^          ^          ^
  |     |   type       |          python version
  |     |              |
@@ -34,7 +34,7 @@ Visit [auto.gluon.ai](https://auto.gluon.ai) for more information.
 ```
 #### GPU version
 ```
-0.6.1-cuda11.3-jupyter-ubuntu20.04-py3.8
+0.6.2-cuda11.3-jupyter-ubuntu20.04-py3.8
  ^        ^    ^          ^          ^
  |        |    type       |          python version
  |        |               |
@@ -50,16 +50,16 @@ Visit [auto.gluon.ai](https://auto.gluon.ai) for more information.
 Start Container and Notebook Server with GPU support
 
 ```shell
-$ docker pull autogluon/autogluon:0.6.1-cuda11.3-jupyter-ubuntu20.04-py3.8
+$ docker pull autogluon/autogluon:0.6.2-cuda11.3-jupyter-ubuntu20.04-py3.8
 $ docker run --gpus all --shm-size=1G --rm -it -p 8888:8888 \
-         autogluon/autogluon:0.6.1-cuda11.3-jupyter-ubuntu20.04-py3.8
+         autogluon/autogluon:0.6.2-cuda11.3-jupyter-ubuntu20.04-py3.8
 ```
 
 Start Container and Notebook Server with CPU-only support
 
 ```shell
-$ docker pull autogluon/autogluon:0.6.1-cpu-jupyter-ubuntu20.04-py3.8
+$ docker pull autogluon/autogluon:0.6.2-cpu-jupyter-ubuntu20.04-py3.8
 $ docker run --rm --shm-size=1G -it -p 8888:8888 \
-         autogluon/autogluon:0.6.1-cpu-jupyter-ubuntu20.04-py3.8
+         autogluon/autogluon:0.6.2-cpu-jupyter-ubuntu20.04-py3.8
 ```
 
