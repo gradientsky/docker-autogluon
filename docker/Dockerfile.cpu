@@ -52,6 +52,14 @@ RUN HOME_DIR=/root \
  && ${HOME_DIR}/oss_compliance/generate_oss_compliance.sh ${HOME_DIR} python \
  && rm -rf ${HOME_DIR}/oss_compliance*
 
+RUN pip uninstall -y \
+  sagemaker \
+  sagemaker-experiments \
+  sagemaker-pytorch-training \
+  sagemaker-training \
+  smdebug \
+  smdistributed-modelparallel
+
 RUN curl -o /licenses-autogluon.txt https://autogluon.s3.us-west-2.amazonaws.com/licenses/THIRD-PARTY-LICENSES.txt
 
 CMD ["/bin/bash"]
