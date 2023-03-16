@@ -1,10 +1,10 @@
 ARG FROM_IMAGE
 FROM ${FROM_IMAGE}
 
-RUN pip --no-cache-dir install --upgrade jupyter ipykernel ipython==7.16 'jedi<0.18.0'
+RUN pip --no-cache-dir install --upgrade jupyter jupyterlab ipykernel ipython jedi
 
 EXPOSE 8888
 
-CMD ["jupyter", "notebook", "--port=8888", "--ip=0.0.0.0", "--no-browser", "--allow-root"]
+CMD ["jupyter-lab", "--port=8888", "--ip=0.0.0.0", "--no-browser", "--allow-root"]
 
 
