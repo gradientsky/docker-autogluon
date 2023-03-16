@@ -5,6 +5,7 @@ RUN pip --no-cache-dir install --upgrade jupyter jupyterlab ipykernel ipython je
 
 EXPOSE 8888
 
-CMD ["jupyter-lab", "--port=8888", "--ip=0.0.0.0", "--no-browser", "--allow-root"]
+RUN mkdir /workspace
+WORKDIR /workspace
 
-
+CMD ["jupyter-lab", "--port=8888", "--ip=0.0.0.0", "--no-browser", "--allow-root", "--NotebookApp.token=''"]

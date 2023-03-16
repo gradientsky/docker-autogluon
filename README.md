@@ -27,7 +27,7 @@ Visit [auto.gluon.ai](https://auto.gluon.ai) for more information.
 
 #### CPU version
 ```
-0.7.0-cpu-framework-ubuntu20.04-py3.8
+0.7.0-cpu-framework-ubuntu20.04-py3.9
  ^     ^   ^          ^          ^
  |     |   type       |          python version
  |     |              |
@@ -39,7 +39,7 @@ Visit [auto.gluon.ai](https://auto.gluon.ai) for more information.
 ```
 #### GPU version
 ```
-0.7.0-cuda11.7-jupyter-ubuntu20.04-py3.8
+0.7.0-cuda11.7-jupyter-ubuntu20.04-py3.9
  ^        ^    ^          ^          ^
  |        |    type       |          python version
  |        |               |
@@ -55,16 +55,16 @@ Visit [auto.gluon.ai](https://auto.gluon.ai) for more information.
 Start Container and Notebook Server with GPU support
 
 ```shell
-$ docker pull autogluon/autogluon:0.7.0-cuda11.7-jupyter-ubuntu20.04-py3.8
+$ docker pull autogluon/autogluon:0.7.0-cuda11.7-jupyter-ubuntu20.04-py3.9
 $ docker run --gpus all --shm-size=1G --rm -it -p 8888:8888 \
-         autogluon/autogluon:0.7.0-cuda11.7-jupyter-ubuntu20.04-py3.8
+         autogluon/autogluon:0.7.0-cuda11.7-jupyter-ubuntu20.04-py3.9
 ```
 
 Start Container and Notebook Server with CPU-only support
 
 ```shell
-$ docker pull autogluon/autogluon:0.7.0-cpu-jupyter-ubuntu20.04-py3.8
+$ docker pull autogluon/autogluon:0.7.0-cpu-jupyter-ubuntu20.04-py3.9
 $ docker run --rm --shm-size=1G -it -p 8888:8888 \
-         autogluon/autogluon:0.7.0-cpu-jupyter-ubuntu20.04-py3.8
+         autogluon/autogluon:0.7.0-cpu-jupyter-ubuntu20.04-py3.9
 ```
 
