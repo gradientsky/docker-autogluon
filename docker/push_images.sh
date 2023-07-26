@@ -1,5 +1,5 @@
 # Push unofficial images
-export AUTOGLUON_VERSION='0.7.0'
+export AUTOGLUON_VERSION='0.8.2'
 export OS_NAME='ubuntu20.04'
 export PYTHON_VERSION='3.9'
 export CUDA='11.7'
