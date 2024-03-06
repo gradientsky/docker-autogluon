@@ -1,8 +1,8 @@
 # Push unofficial images
-export AUTOGLUON_VERSION='0.8.2'
+export AUTOGLUON_VERSION='1.0.0'
 export OS_NAME='ubuntu20.04'
-export PYTHON_VERSION='3.9'
-export CUDA='11.7'
+export PYTHON_VERSION='3.10'
+export CUDA='11.8'
 
 export PREFIX=$AUTOGLUON_VERSION-cpu
 export SUFFIX=$OS_NAME-py$PYTHON_VERSION

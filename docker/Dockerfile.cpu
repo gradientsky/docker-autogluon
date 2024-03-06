@@ -1,6 +1,6 @@
-ARG PYTHON_VERSION=3.9.16
+ARG PYTHON_VERSION=3.10.8
 
-FROM 763104351884.dkr.ecr.us-west-2.amazonaws.com/pytorch-training:1.13.1-cpu-py39-ubuntu20.04-sagemaker
+FROM 763104351884.dkr.ecr.us-west-2.amazonaws.com/pytorch-training:2.0.1-cpu-py310-ubuntu20.04-sagemaker
 
 # PYTORCH_SKIP_CUDNN_COMPATIBILITY_CHECK - see https://github.com/autogluon/autogluon/issues/2534
 # ENV PYTORCH_SKIP_CUDNN_COMPATIBILITY_CHECK=1
@@ -20,40 +20,36 @@ RUN apt-get update \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
 
-ARG AUTOGLUON_VERSION=0.8.2
+ARG AUTOGLUON_VERSION=1.0.0
 
-# NOTE: reinstalling horovod with pytorch support because it is available in the container
-# Update requests >= 2.31.0: CVE-2023-32681
-# update cryptography >=41.0.0: CVE-2023-2650. This comes from the base image
-# update tornado >= 6.3.2: CVE-2023-28370. This comes from the base image
-# update pyOpenSSL 23.2.0 so cryptography can be updated
-# pin mmengine to avoid MultiModalPredictor import crashing
-# pin yapf to resolve importlib-metadata conflict with sagemaker==2.150.0
+# Upgrading pip and installing/updating Python dependencies
+# Comments are added to explain the reason behind each update
 RUN pip install --no-cache-dir -U --trusted-host pypi.org --trusted-host files.pythonhosted.org pip \
  && pip install --no-cache-dir -U setuptools wheel \
  && pip install --no-cache-dir -U numpy numba \
  && pip install --no-cache-dir -U autogluon==${AUTOGLUON_VERSION} \
  && mim install -q mmcv \
  && pip install --no-cache-dir -U mmdet>=3.0.0 \
- && pip install --no-cache-dir -U "pymupdf<=1.21.1" \
- && pip install --no-cache-dir -U "mmengine<0.8" \
- && pip install --no-cache-dir -U "yapf<0.40.0" \
- && pip install --no-cache-dir -U "importlib-metadata<5.0" \
+ && pip install --no-cache-dir -U "pymupdf" \
+ && pip install --no-cache-dir -U "mmengine" \
+# Update requests to a secure version that fixes CVE-2023-32681
  && pip install --no-cache-dir -U requests>=2.31.0 \
- && pip install --no-cache-dir -U pyOpenSSL>=23.2.0 \
- && pip install --no-cache-dir -U cryptography>=41.0.0 \
- && pip install --no-cache-dir -U tornado>=6.3.2
+#  && pip install --no-cache-dir -U pyOpenSSL>=23.2.0 \
+# Update ray to a secure version that fixes CVE-2023-6019, CVE-2023-6020, CVE-2023-6021, and CVE-2023-48023
+ && pip install --no-cache-dir -U ray>=2.8.1 \
+ # Update transformers to secure versions that fixes CVE-2023-7018
+ && pip install --no-cache-dir -U transformers>=4.36.0 \
+ && pip install --no-cache-dir -U setuptools>=65.5.1 \
+ && pip install --no-cache-dir -U cryptography>=41.0.7 \
+ # Update pillow to a secure version that fixes CVE-2023-50447
+ && pip install --no-cache-dir -U pillow>=10.2.0 \
+  # Update Jinja2 to a secure version that fixes vulnerability id 64227
+ && pip install --no-cache-dir -U Jinja2>=3.1.3 \
+ # Update aiohttp to a secure version that fixes vulnerability id 64642
+ && pip install --no-cache-dir -U aiohttp>=3.9.2 \
+ # update paramiko to a secure version that fixes vulnerability id 65193
+ && pip install --no-cache-dir -U --no-cache-dir -U paramiko>=3.4.0
 
-# Removing GluonTS nursery/tsbench package - it is not used in training/inference and have security vulnerabilities
-RUN rm -rf /usr/local/lib/python3.9/dist-packages/gluonts/nursery/tsbench \
- && rm -rf /opt/conda/lib/python3.9/dist-packages/gluonts/nursery/tsbench
-
-# Remove these JAR files to address security issues; these are not used if only python package is used
-RUN rm -rf /usr/local/lib/python3.9/dist-packages/ray/jars \
- && rm -rf /opt/conda/lib/python3.9/site-packages/ray/jars
-
-# Removing cryptography from micromamba version of cryptography which is not used to address security vulnerabilities
-RUN rm -rf /root/micromamba/pkgs/cryptography-39.0.0-py310h34c0648_0/lib/python3.10/site-packages/
 
 RUN HOME_DIR=/root \
  && curl -o ${HOME_DIR}/oss_compliance.zip https://aws-dlinfra-utilities.s3.amazonaws.com/oss_compliance.zip \
